@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package modelos;
+import java.util.*;
 
 public class FCFS extends Algoritmo {
     public FCFS(String nombre){
@@ -6,7 +7,7 @@ public class FCFS extends Algoritmo {
     }
 
     @Override
-    ResultadoEjecucion ejecutar(ArrayList<BCP> procesos){
+    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos){
         // ordenar por llegada usando un comparator
         procesos.sort(Comparator.comparingInt(BCP::getLlegada));
 
@@ -27,7 +28,7 @@ public class FCFS extends Algoritmo {
             // crear el arraylist de tiempos donde se ejecuto el proceso
             List<Integer> tiempos = new ArrayList<>();
             // hasta que terminesn las rafagas, ir agregando al arraylist de 'tiempos'
-            for (int r = 0; i < proceso.getRafagas(); r++) {
+            for (int r = 0; r < proceso.getRafagas(); r++) {
                 tiempos.add(reloj);
                 reloj++; // aumentar el tiempo actual
             }
@@ -36,14 +37,15 @@ public class FCFS extends Algoritmo {
             resultado.addTiempos(proceso.getNombre(), tiempos);
         }
         int cantProcesos = procesos.size();
-        resultado.tiempoPromedioEjecucion = totalEjecucion / (float)cantProcesos;
-        resultado.tiempoPromedioEspera = totalEspera / (float)cantProcesos;
+        resultado.setTiempoPromedioEjecucion(totalEjecucion / (float)cantProcesos);
+        resultado.setTiempoPromedioEspera(totalEspera / (float)cantProcesos);
 
         return resultado;
     }
     
     @Override
-    ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int quantum){
+    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int quantum){
         System.out.println("ERROR. No se necesita quantum para este algoritmo");
+        return null;
     }
 }

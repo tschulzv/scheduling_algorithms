@@ -1,5 +1,4 @@
-package BCP;
-
+package modelos;
 
 public class BCP {
     private String nombre; // nombre

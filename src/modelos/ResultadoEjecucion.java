@@ -1,3 +1,4 @@
+package modelos;
 import java.util.*;
 
 // clase auxiliar para compartir información entre el algoritmo y el diagrama
