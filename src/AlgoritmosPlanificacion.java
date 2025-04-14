@@ -1,3 +1,4 @@
+import java.util.*;
 import modelos.*;
 import vistas.*;
 
@@ -8,7 +9,9 @@ import vistas.*;
 public class AlgoritmosPlanificacion {
 
     public static void main(String[] args) {
-
-        //PantallaPrincipal pantalla = new PantallaPrincipal();
+        // leer el csv y crear los procesos
+        List<BCP> procesos = new ArrayList<>();
+        PantallaPrincipal pantalla = new PantallaPrincipal(procesos);
 
     }
+}
