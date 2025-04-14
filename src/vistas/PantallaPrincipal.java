@@ -15,13 +15,17 @@ public class PantallaPrincipal extends JFrame {
         setTitle("Algoritmos de Planificación de Procesos");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        Object[][] datos = {
-            {"A", 0, 8},
-            {"B", 1, 4},
-            {"C", 2, 9},
-            {"D", 3, 5},
-            {"E", 8, 2}
-        };
+        
+        // convertir la lista de procesos en datos para la tabla
+        Object[][] datos = new Object[procesos.size()][3];
+
+        for (int i = 0; i < procesos.size(); i++) {
+            BCP proceso = procesos.get(i);
+            datos[i][0] = proceso.getNombre();
+            datos[i][1] = proceso.getLlegada();
+            datos[i][2] = proceso.getRafagas();
+        }
+
         // Panel izquierdo: Tabla de procesos
         String[] columnas = {"Nombre", "T. Llegada", "Rafagas"};
         
