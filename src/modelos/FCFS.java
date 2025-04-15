@@ -16,7 +16,7 @@ public class FCFS extends Algoritmo {
         int totalEspera = 0;
 
         // crear objeto donde cargaremos los procesos con sus tiempos
-        ResultadoEjecucion resultado = new ResultadoEjecucion();
+        ResultadoEjecucion resultado = new ResultadoEjecucion("FCFS");
 
         for (BCP proceso : procesos){
             // agregar su tiempo de espera al total
@@ -39,7 +39,7 @@ public class FCFS extends Algoritmo {
         int cantProcesos = procesos.size();
         resultado.setTiempoPromedioEjecucion(totalEjecucion / (float)cantProcesos);
         resultado.setTiempoPromedioEspera(totalEspera / (float)cantProcesos);
-
+        resultado.setFinTiempo(--reloj); // para saber cuantas columnas poner en la tabla
         return resultado;
     }
     

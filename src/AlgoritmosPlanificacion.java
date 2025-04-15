@@ -14,7 +14,7 @@ public class AlgoritmosPlanificacion {
     public static void main(String[] args) {
         // si no se le pasa un nombre de archivo como args, usa ejemplo.txt
         String archivo =  args.length == 1 ? args[0] : "ejemplo.txt";
-        List<BCP> procesos = new ArrayList<>();
+        ArrayList<BCP> procesos = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             // leer linea a linea
@@ -31,7 +31,7 @@ public class AlgoritmosPlanificacion {
             e.printStackTrace();
         }
 
-        // leer el csv y crear los procesos
+        // crerar la pantalla principal
         PantallaPrincipal pantalla = new PantallaPrincipal(procesos);
 
     }

@@ -17,7 +17,7 @@ public class SJF extends Algoritmo {
         int totalEspera = 0;
 
         // crear objeto donde cargaremos los procesos con sus tiempos
-        ResultadoEjecucion resultado = new ResultadoEjecucion();
+        ResultadoEjecucion resultado = new ResultadoEjecucion("SJF");
 
         for (BCP proceso : procesos){
             // agregar su tiempo de espera al total
@@ -38,6 +38,7 @@ public class SJF extends Algoritmo {
             resultado.addTiempos(proceso.getNombre(), tiempos);
         }
         int cantProcesos = procesos.size();
+        resultado.setFinTiempo(--reloj); // para saber cuantas columnas poner en la tabla
         resultado.setTiempoPromedioEjecucion(totalEjecucion / (float)cantProcesos);
         resultado.setTiempoPromedioEspera(totalEspera / (float)cantProcesos);
 
