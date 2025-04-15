@@ -109,7 +109,7 @@ public class PantallaPrincipal extends JFrame {
                             resultado = new SJF("SJF").ejecutar(procesos);
                             break;
                         case "SJF Con Desalojo":
-                            // resultado = new AlgoritmoSJF(true).ejecutar(procesos);
+                            // resultado = new AlgoritmoSJF("SJF Con Desalojo").ejecutar(procesos);
                             break;
                         case "Prioridad":
                             // resultado = new AlgoritmoPrioridad().ejecutar(procesos);
