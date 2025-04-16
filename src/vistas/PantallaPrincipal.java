@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import modelos.*;
+import utilidades.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -109,7 +110,9 @@ public class PantallaPrincipal extends JFrame {
                             resultado = new SJF("SJF").ejecutar(procesos);
                             break;
                         case "SJF Con Desalojo":
-                            // resultado = new AlgoritmoSJF("SJF Con Desalojo").ejecutar(procesos);
+                        // crear una copia pq este algoritmo hace 'remove' del arraylist y decrementa rafagas
+                            ArrayList<BCP> copia = BCPUtils.copiarLista(procesos);
+                            resultado = new SJFExpulsivo("SJF Con Desalojo").ejecutar(copia);
                             break;
                         case "Prioridad":
                             // resultado = new AlgoritmoPrioridad().ejecutar(procesos);
@@ -151,4 +154,6 @@ public class PantallaPrincipal extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+
 }

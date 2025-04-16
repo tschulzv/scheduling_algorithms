@@ -13,6 +13,13 @@ public class BCP {
         this.rafagas = rafagas;
         this.prioridad = prioridad;
     }
+    
+    // constructor copia usado para deep copy
+    public BCP(BCP otro) {
+        this.nombre = otro.nombre;
+        this.llegada = otro.llegada;
+        this.rafagas = otro.rafagas;
+    }
 
     // getters y setters
     public String getNombre() {
