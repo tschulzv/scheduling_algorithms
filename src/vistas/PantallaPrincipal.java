@@ -177,11 +177,11 @@ public class PantallaPrincipal extends JFrame {
                             resultado = new SJFExpulsivo("SJF Con Desalojo").ejecutar(procesos, 0);
                             break;
                         case "Prioridad":
-                            // resultado = new AlgoritmoPrioridad().ejecutar(procesos);
+                            resultado = new Prioridad("Prioridad").ejecutar(procesos, 0);
                             break;
                         case "RR":
-                             //int quantum = Integer.parseInt(quantumField.getText());
-                             //resultado = new RoundRobin("Round Robin", quantum).ejecutar(procesos, 0);
+                             int quantum = Integer.parseInt(quantumField.getText());
+                             resultado = new RR("RR", quantum).ejecutar(procesos, 0);
                             break;
                         case "HRRN":
                             // resultado = new AlgoritmoHRRN().ejecutar(procesos);
