@@ -48,6 +48,7 @@ public class PantallaPrincipal extends JFrame {
         JCheckBox prioridad = new JCheckBox("Prioridad");
         JCheckBox rr = new JCheckBox("RR");
         JCheckBox hrrn = new JCheckBox("HRRN");
+        JCheckBox colaMulti = new JCheckBox("Cola Multinivel");
 
         checkboxes.add(fcfs);
         checkboxes.add(sjfSin);
@@ -55,7 +56,9 @@ public class PantallaPrincipal extends JFrame {
         checkboxes.add(prioridad);
         checkboxes.add(rr);
         checkboxes.add(hrrn);
+        checkboxes.add(colaMulti);
 
+        // item listener para evitar que se seleccionen más de 3 algoritmos
         for (JCheckBox cb : checkboxes) {
             cb.addItemListener(e -> {
                 long seleccionados = checkboxes.stream().filter(AbstractButton::isSelected).count();
@@ -72,6 +75,65 @@ public class PantallaPrincipal extends JFrame {
         rrPanel.add(new JLabel("Q ="));
         rrPanel.add(quantumField);
 
+        String[] algoritmos = {"FCFS", "SJF Sin Desalojo", "SJF Con Desalojo", "Prioridad", "RR", "HRRN"};
+
+        // algoritmos y quantum para Cola 1
+        JComboBox<String> comboNivel1 = new JComboBox<>(algoritmos);
+        JTextField quantum1Field = new JTextField("4", 5);
+        JPanel panelQuantum1 = new JPanel();
+        panelQuantum1.add(new JLabel("Quantum:"));
+        panelQuantum1.add(quantum1Field);
+        panelQuantum1.setVisible(false);
+
+        // algoritmos y quantum para Cola 2
+        JComboBox<String> comboNivel2 = new JComboBox<>(algoritmos);
+        JTextField quantum2Field = new JTextField("4", 5);
+        JPanel panelQuantum2 = new JPanel();
+        panelQuantum2.add(new JLabel("Quantum:"));
+        panelQuantum2.add(quantum2Field);
+        panelQuantum2.setVisible(false);
+
+        // algoritmos y quantum para Cola 3
+        JComboBox<String> comboNivel3 = new JComboBox<>(algoritmos);
+        JTextField quantum3Field = new JTextField("4", 5);
+        JPanel panelQuantum3 = new JPanel();
+        panelQuantum3.add(new JLabel("Quantum:"));
+        panelQuantum3.add(quantum3Field);
+        panelQuantum3.setVisible(false);
+
+        // item listeners para mostrar input de quantum si se selecciona RR en alguna cola
+        comboNivel1.addItemListener(e -> {
+            panelQuantum1.setVisible(comboNivel1.getSelectedItem().equals("RR"));
+        });
+        
+        comboNivel2.addItemListener(e -> {
+            panelQuantum2.setVisible(comboNivel2.getSelectedItem().equals("RR"));
+        });
+        
+        comboNivel3.addItemListener(e -> {
+            panelQuantum3.setVisible(comboNivel3.getSelectedItem().equals("RR"));
+        });
+        
+        // panel para la cola multinicel
+        JPanel panelColas = new JPanel();
+        panelColas.setLayout(new GridLayout(6, 2, 5, 5));
+        panelColas.setBorder(BorderFactory.createTitledBorder("Algoritmos Cola Multinivel"));
+
+        panelColas.add(new JLabel("Cola 1 (Prio. Alta):"));
+        panelColas.add(comboNivel1);
+        panelColas.add(new JLabel(""));
+        panelColas.add(panelQuantum1);
+
+        panelColas.add(new JLabel("Cola 2 (Prio. Media):"));
+        panelColas.add(comboNivel2);
+        panelColas.add(new JLabel(""));
+        panelColas.add(panelQuantum2);
+
+        panelColas.add(new JLabel("Cola 3 (Prio. Baja):"));
+        panelColas.add(comboNivel3);
+        panelColas.add(new JLabel(""));
+        panelColas.add(panelQuantum3);
+
         JButton btnEjecutar = new JButton("Ejecutar");
 
         panelAlgoritmos.add(fcfs);
@@ -80,6 +142,8 @@ public class PantallaPrincipal extends JFrame {
         panelAlgoritmos.add(prioridad);
         panelAlgoritmos.add(rrPanel);
         panelAlgoritmos.add(hrrn);
+        panelAlgoritmos.add(colaMulti);
+        panelAlgoritmos.add(panelColas);
         panelAlgoritmos.add(Box.createRigidArea(new Dimension(0, 10)));
         panelAlgoritmos.add(btnEjecutar);
 
@@ -123,8 +187,24 @@ public class PantallaPrincipal extends JFrame {
                             // resultado = new AlgoritmoHRRN().ejecutar(procesos);
                             break;
                         case "Cola Multinivel":
-                            // obtener los 3 algoritmos seleccionados
-                            //resultado = new ColaMultinivel().ejecutarMultinivel(procesos);
+                            String alg1 = (String) comboNivel1.getSelectedItem();
+                            String alg2 = (String) comboNivel2.getSelectedItem();
+                            String alg3 = (String) comboNivel3.getSelectedItem();
+                            
+                            int q1 = 0, q2 = 0, q3 = 0;
+                            
+                            try {
+                                if (alg1.equals("RR")) q1 = Integer.parseInt(quantum1Field.getText());
+                                if (alg2.equals("RR")) q2 = Integer.parseInt(quantum2Field.getText());
+                                if (alg3.equals("RR")) q3 = Integer.parseInt(quantum3Field.getText());
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(this, "Quantum inválido en alguna cola.");
+                                return;
+                            }
+                            Algoritmo a1 = crearAlgoritmo(alg1, q1);
+                            Algoritmo a2 = crearAlgoritmo(alg2, q2);
+                            Algoritmo a3 = crearAlgoritmo(alg3, q3);
+                            resultado = new ColaMultinivel().ejecutarMultinivel(procesos, a1, a2, a3);
                     }
 
                     if (resultado != null) {
@@ -156,5 +236,25 @@ public class PantallaPrincipal extends JFrame {
         setVisible(true);
     }
 
+    // funcion auxiliar para crear los algoritmos segun lo seleccionado para la cola multinivel
+    private static Algoritmo crearAlgoritmo(String nombre, int quantum) {
+        switch (nombre) {
+            case "FCFS":
+                return new FCFS(nombre);
+            case "SJF Sin Desalojo":
+                return new SJF(nombre);
+            case "SJF Con Desalojo":
+                return new SJFExpulsivo(nombre);
+            case "RR":
+                //return new RoundRobin(nombre, quantum);
+            case "HRRN":
+                //return new HRRN(nombre);
+            case "Prioridad":
+                //return new Prioridad(nombre); // si la tenés implementada
+            default:
+                return null;
+        }
+    }
+    
 
 }
