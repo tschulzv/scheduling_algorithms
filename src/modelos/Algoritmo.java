@@ -2,11 +2,16 @@ package modelos;
 import java.util.ArrayList;
 
 public abstract class Algoritmo {
-
     private String nombre;
+    private int quantum;
 
     public Algoritmo(String nombre) {
         this.nombre = nombre;
+    }
+    // constructor algoritmos con quantum
+    public Algoritmo(String nombre, int quantum){
+        this.nombre = nombre;
+        this.quantum = quantum;
     }
 
     public String getNombre() {
@@ -17,9 +22,18 @@ public abstract class Algoritmo {
         this.nombre = nombre;
     }
 
+    public int getQuantum(){
+        return quantum;
+    }
+
+    public void setQuantum(int quantum){
+        this.quantum = quantum;
+    }
+
     //  ejecutar 
-    public abstract ResultadoEjecucion ejecutar(ArrayList<BCP> procesos);
+    public abstract ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio);
+    
     // ejecutar con quantum
-    public abstract ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int quantum);
+    //public abstract ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio, int quantum);
 
 }

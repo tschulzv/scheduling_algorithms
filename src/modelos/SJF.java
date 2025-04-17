@@ -8,11 +8,11 @@ public class SJF extends Algoritmo {
     }
 
     @Override
-    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos){
+    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio){
         // ordenar por cantidad de rafagas usando un comparator
         procesos.sort(Comparator.comparingInt(BCP::getRafagas));
 
-        int reloj = 0; // lleva la cuenta del tiempo actual
+        int reloj = tiempoInicio; // lleva la cuenta del tiempo actual
         int totalEjecucion = 0; 
         int totalEspera = 0;
 
@@ -45,9 +45,9 @@ public class SJF extends Algoritmo {
         return resultado;
     }
     
-    @Override
-    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int quantum){
+    /*@Override
+    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio, int quantum){
         System.out.println("ERROR. No se necesita quantum para este algoritmo");
         return null;
-    }
+    }*/
 }

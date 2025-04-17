@@ -112,6 +112,27 @@ public class ResultadoEjecucion {
         
         return matriz;
     }
+    // Combina varios resultados de ejecución - para Cola Multinivel
+    // recibe un vargargs de varios resultados
+    public static ResultadoEjecucion mergeResultados(ResultadoEjecucion... resultados) {
+        Map<String, List<Integer>> tiemposTotales = new LinkedHashMap<>();
+        float totalEspera = 0;
+        float totalEjecucion = 0;
+        int cantidadProcesos = 0;
+    
+        for (ResultadoEjecucion r : resultados) {
+            tiemposTotales.putAll(r.getTiemposPorProceso());
+            totalEspera += r.getTiempoPromedioEspera() * r.getTiemposPorProceso().size();
+            totalEjecucion += r.getTiempoPromedioEjecucion() * r.getTiemposPorProceso().size();
+            cantidadProcesos += r.getTiemposPorProceso().size();
+        }
+    
+        float promedioEspera = totalEspera / cantidadProcesos;
+        float promedioEjecucion = totalEjecucion / cantidadProcesos;
+    
+        return new ResultadoEjecucion("Multinivel", tiemposTotales, promedioEjecucion, promedioEspera);
+    }
+    
 
     
 }

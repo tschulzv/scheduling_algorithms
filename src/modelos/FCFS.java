@@ -7,7 +7,7 @@ public class FCFS extends Algoritmo {
     }
 
     @Override
-    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos){
+    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio){
         // ordenar por llegada usando un comparator
         procesos.sort(Comparator.comparingInt(BCP::getLlegada));
 
@@ -43,9 +43,9 @@ public class FCFS extends Algoritmo {
         return resultado;
     }
     
-    @Override
-    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int quantum){
+    /*@Override
+    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio, int quantum){
         System.out.println("ERROR. No se necesita quantum para este algoritmo");
         return null;
-    }
+    }*/
 }

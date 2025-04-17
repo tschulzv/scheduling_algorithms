@@ -104,26 +104,27 @@ public class PantallaPrincipal extends JFrame {
 
                     switch (nombreAlgoritmo) {
                         case "FCFS":
-                            resultado = new FCFS("FCFS").ejecutar(procesos);
+                            resultado = new FCFS("FCFS").ejecutar(procesos, 0);
                             break;
                         case "SJF Sin Desalojo":
-                            resultado = new SJF("SJF").ejecutar(procesos);
+                            resultado = new SJF("SJF").ejecutar(procesos, 0);
                             break;
                         case "SJF Con Desalojo":
-                        // crear una copia pq este algoritmo hace 'remove' del arraylist y decrementa rafagas
-                            ArrayList<BCP> copia = BCPUtils.copiarLista(procesos);
-                            resultado = new SJFExpulsivo("SJF Con Desalojo").ejecutar(copia);
+                            resultado = new SJFExpulsivo("SJF Con Desalojo").ejecutar(procesos, 0);
                             break;
                         case "Prioridad":
                             // resultado = new AlgoritmoPrioridad().ejecutar(procesos);
                             break;
                         case "RR":
-                            // int quantum = Integer.parseInt(quantumField.getText());
-                            // resultado = new AlgoritmoRR(quantum).ejecutar(procesos);
+                             //int quantum = Integer.parseInt(quantumField.getText());
+                             //resultado = new RoundRobin("Round Robin", quantum).ejecutar(procesos, 0);
                             break;
                         case "HRRN":
                             // resultado = new AlgoritmoHRRN().ejecutar(procesos);
                             break;
+                        case "Cola Multinivel":
+                            // obtener los 3 algoritmos seleccionados
+                            //resultado = new ColaMultinivel().ejecutarMultinivel(procesos);
                     }
 
                     if (resultado != null) {
