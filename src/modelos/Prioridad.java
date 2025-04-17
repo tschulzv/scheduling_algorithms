@@ -14,6 +14,7 @@ public class Prioridad extends Algoritmo {
         int tiempo = tiempoInicio;
         int totalEspera = 0;
         int totalEjecucion = 0;
+        int tiempoFinal = 0;
         ResultadoEjecucion resultado = new ResultadoEjecucion("Prioridad");
 
         while (ejecutados.size() < procesos.size()) {
@@ -38,6 +39,7 @@ public class Prioridad extends Algoritmo {
 
                 int espera = tiempos.get(0) - actual.getLlegada();
                 int ejecucion = tiempos.get(tiempos.size() - 1) - actual.getLlegada() + 1;
+                tiempoFinal = tiempos.get(tiempos.size() - 1);
                 totalEspera += espera;
                 totalEjecucion += ejecucion;
             } else {
@@ -49,7 +51,7 @@ public class Prioridad extends Algoritmo {
             resultado.addTiempos(p.getNombre(), tiemposEjecucion.getOrDefault(p.getNombre(), new ArrayList<>()));
         }
 
-        resultado.setFinTiempo(tiempo);
+        resultado.setFinTiempo(tiempoFinal);
         resultado.setTiempoPromedioEspera((float) totalEspera / procesos.size());
         resultado.setTiempoPromedioEjecucion((float) totalEjecucion / procesos.size());
 
