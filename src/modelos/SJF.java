@@ -1,5 +1,8 @@
 package modelos;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import utilidades.BCPUtils;
 
 // Algoritmo de SJF Sin Desalojo
 public class SJF extends Algoritmo {
@@ -8,46 +11,59 @@ public class SJF extends Algoritmo {
     }
 
     @Override
-    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio){
-        // ordenar por cantidad de rafagas usando un comparator
-        procesos.sort(Comparator.comparingInt(BCP::getRafagas));
+    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio) {
+        // Creamos una copia porque vamos a ir quitando procesos
+        ArrayList<BCP> copia = BCPUtils.copiarLista(procesos);
 
-        int reloj = tiempoInicio; // lleva la cuenta del tiempo actual
-        int totalEjecucion = 0; 
+        int reloj = tiempoInicio;
+        int totalEjecucion = 0;
         int totalEspera = 0;
 
-        // crear objeto donde cargaremos los procesos con sus tiempos
         ResultadoEjecucion resultado = new ResultadoEjecucion("SJF");
 
-        for (BCP proceso : procesos){
-            // agregar su tiempo de espera al total
-            int espera = reloj - proceso.getLlegada();
-            totalEspera += espera; 
-            // agregar tiempo de ejecucion al total
-            totalEjecucion = proceso.getRafagas() + espera;
+        // Tiempos de ejecución por proceso
+        Map<String, List<Integer>> tiemposPorProceso = new HashMap<>();
 
-            // crear el arraylist de tiempos donde se ejecuto el proceso
-            List<Integer> tiempos = new ArrayList<>();
-            // hasta que terminesn las rafagas, ir agregando al arraylist de 'tiempos'
-            for (int r = 0; r < proceso.getRafagas(); r++) {
-                tiempos.add(reloj);
-                reloj++; // aumentar el tiempo actual
+        while (!copia.isEmpty()) {
+            // filtrar procesos que hayan llegado hasta el tiempo actual
+            int tiempoActual = reloj;
+            List<BCP> disponibles = copia.stream()
+                .filter(p -> p.getLlegada() <= tiempoActual)
+                .collect(Collectors.toList());
+
+            if (disponibles.isEmpty()) {
+                reloj++; // si no hay procesos listos, avanzamos el reloj
+                continue;
             }
 
-            // agregamos el proceso y sus tiempos al resultado
-            resultado.addTiempos(proceso.getNombre(), tiempos);
+            // elegir el de menor cantidad de ráfagas
+            BCP proceso = Collections.min(disponibles, Comparator.comparingInt(BCP::getRafagas));
+            copia.remove(proceso);
+
+            // tiempo de espera = reloj actual - llegada
+            int espera = reloj - proceso.getLlegada();
+            totalEspera += espera;
+
+            // tiempo total de ejecución = rafagas + espera
+            int ejec = espera + proceso.getRafagas();
+            totalEjecucion += ejec;
+
+            // guardar los tiempos de ejecución
+            List<Integer> tiempos = new ArrayList<>();
+            for (int i = 0; i < proceso.getRafagas(); i++) {
+                tiempos.add(reloj);
+                reloj++;
+            }
+            tiemposPorProceso.put(proceso.getNombre(), tiempos);
         }
+
         int cantProcesos = procesos.size();
-        resultado.setFinTiempo(--reloj); // para saber cuantas columnas poner en la tabla
-        resultado.setTiempoPromedioEjecucion(totalEjecucion / (float)cantProcesos);
-        resultado.setTiempoPromedioEspera(totalEspera / (float)cantProcesos);
+        resultado.setFinTiempo(reloj - 1);
+        resultado.setTiempoPromedioEjecucion(totalEjecucion / (float) cantProcesos);
+        resultado.setTiempoPromedioEspera(totalEspera / (float) cantProcesos);
+        resultado.setTiemposPorProceso(tiemposPorProceso);
 
         return resultado;
     }
-    
-    /*@Override
-    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio, int quantum){
-        System.out.println("ERROR. No se necesita quantum para este algoritmo");
-        return null;
-    }*/
+
 }

@@ -33,7 +33,4 @@ public abstract class Algoritmo {
     //  ejecutar 
     public abstract ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio);
     
-    // ejecutar con quantum
-    //public abstract ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio, int quantum);
-
 }

@@ -6,8 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- *
- * @author Tania Schulz
+ * PROYECTO 1 DE SISTEMAS OPERATIVOS: Algoritmos de Planificación de Procesos
+ * @author Tania Schulz - Eliana Sanchez
  */
 public class AlgoritmosPlanificacion {
 

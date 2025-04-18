@@ -23,7 +23,7 @@ public class FCFS extends Algoritmo {
             int espera = reloj - proceso.getLlegada();
             totalEspera += espera; 
             // agregar tiempo de ejecucion al total
-            totalEjecucion = proceso.getRafagas() + espera;
+            totalEjecucion += proceso.getRafagas() + espera;
 
             // crear el arraylist de tiempos donde se ejecuto el proceso
             List<Integer> tiempos = new ArrayList<>();
@@ -43,9 +43,4 @@ public class FCFS extends Algoritmo {
         return resultado;
     }
     
-    /*@Override
-    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio, int quantum){
-        System.out.println("ERROR. No se necesita quantum para este algoritmo");
-        return null;
-    }*/
 }

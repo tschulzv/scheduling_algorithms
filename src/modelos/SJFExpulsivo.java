@@ -15,15 +15,15 @@ public class SJFExpulsivo extends Algoritmo {
         // del arraylist y decrementa rafagas
         ArrayList<BCP> copia = BCPUtils.copiarLista(procesos);
 
-        int reloj = 0; // lleva la cuenta del tiempo actual
+        int reloj = tiempoInicio; // lleva la cuenta del tiempo actual
         int totalEjecucion = 0; 
         int totalEspera = 0;
 
         // crear objeto donde cargaremos los procesos con sus tiempos
         ResultadoEjecucion resultado = new ResultadoEjecucion("SJF Expulsivo");
 
-        // crear una cola de prioridad con los BCP ordenados por cantidad de rafagas
-        PriorityQueue<BCP> cola = new PriorityQueue<>(Comparator.comparingInt(BCP::getRafagas));
+        // crear una cola de prioridad con los BCP ordenados por cantidad de rafagas, y en caso de empate por llegada
+        PriorityQueue<BCP> cola = new PriorityQueue<>(Comparator.comparingInt(BCP::getRafagas).thenComparingInt(BCP::getLlegada));
         // map donde guardaremos los tiempos 'trabajando' de cada proceso
         Map<String, List<Integer>> tiemposPorProceso = new HashMap<>(); 
 
@@ -47,6 +47,7 @@ public class SJFExpulsivo extends Algoritmo {
                 actual.setRafagas(actual.getRafagas() - 1); // decrementamos sus rafagas
                
                 if (actual.getRafagas() == 0){ // si llega a 0 rafagas entonces sacamos de la cola
+                    reloj++;
                     // tiempo de ejecucion es tiempo actual - tiempo llegada
                     totalEjecucion += (reloj - actual.getLlegada());
                     // su tiempo total de espera sería tiempo actual - rafagas - tiempo inicio
@@ -60,23 +61,18 @@ public class SJFExpulsivo extends Algoritmo {
                     totalEspera += (reloj - actual.getLlegada() - totalRafagas);
                     cola.remove(actual);
                 } else { // volver a meter a la cola
+                    reloj++;
                     cola.add(actual);
-                } 
-                reloj++;
+                }       
             } 
         }
 
         int cantProcesos = procesos.size();
-        resultado.setFinTiempo(--reloj); // para saber cuantas columnas poner en la tabla
+        resultado.setFinTiempo(reloj - 1); // para saber cuantas columnas poner en la tabla
         resultado.setTiempoPromedioEjecucion(totalEjecucion / (float)cantProcesos);
         resultado.setTiempoPromedioEspera(totalEspera / (float)cantProcesos);
         resultado.setTiemposPorProceso(tiemposPorProceso); // pasarle el map de procesos y tiempos
         return resultado;
     }
     
-    /*@Override
-    public ResultadoEjecucion ejecutar(ArrayList<BCP> procesos, int tiempoInicio, int quantum){
-        System.out.println("ERROR. No se necesita quantum para este algoritmo");
-        return null;
-    }*/
 }
