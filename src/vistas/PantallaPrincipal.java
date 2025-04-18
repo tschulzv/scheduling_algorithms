@@ -20,17 +20,21 @@ public class PantallaPrincipal extends JFrame {
         setLayout(new BorderLayout());
 
         // convertir la lista de procesos en datos para la tabla
-        Object[][] datos = new Object[procesos.size()][3];
+        Object[][] datos = new Object[procesos.size()][4];
 
         for (int i = 0; i < procesos.size(); i++) {
             BCP proceso = procesos.get(i);
             datos[i][0] = proceso.getNombre();
             datos[i][1] = proceso.getLlegada();
             datos[i][2] = proceso.getRafagas();
+            datos[i][3] = proceso.getPrioridad();
         }
 
-        // Panel izquierdo: Tabla de procesos
-        String[] columnas = {"Nombre", "T. Llegada", "Rafagas"};
+        JPanel panelCentro = new JPanel();
+        panelCentro.setLayout(new BoxLayout(panelCentro, BoxLayout.Y_AXIS));
+
+        // crear tabla de procesos
+        String[] columnas = {"Nombre", "T. Llegada", "Rafagas", "Prioridad"};
         JTable tabla = new JTable(new DefaultTableModel(datos, columnas));
         JScrollPane scrollTabla = new JScrollPane(tabla);
         JPanel panelTabla = new JPanel(new BorderLayout());
@@ -153,9 +157,11 @@ public class PantallaPrincipal extends JFrame {
         JScrollPane scrollResultados = new JScrollPane(panelResultados);
 
         // Agregar al frame
-        add(panelTabla, BorderLayout.WEST);
+        panelCentro.add(panelTabla);
+        panelCentro.add(scrollResultados);
+        //add(panelTabla, BorderLayout.WEST);
         add(panelAlgoritmos, BorderLayout.EAST);
-        add(scrollResultados, BorderLayout.CENTER);
+        add(panelCentro, BorderLayout.CENTER);
 
         // Acción del botón Ejecutar
         btnEjecutar.addActionListener(e -> {
@@ -246,11 +252,11 @@ public class PantallaPrincipal extends JFrame {
             case "SJF Con Desalojo":
                 return new SJFExpulsivo(nombre);
             case "RR":
-                //return new RoundRobin(nombre, quantum);
+                return new RR(nombre, quantum);
             case "HRRN":
-                //return new HRRN(nombre);
+                return new HRRN(nombre);
             case "Prioridad":
-                //return new Prioridad(nombre); // si la tenés implementada
+                return new Prioridad(nombre); 
             default:
                 return null;
         }

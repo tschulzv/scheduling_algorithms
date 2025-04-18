@@ -126,11 +126,19 @@ public class ResultadoEjecucion {
             totalEjecucion += r.getTiempoPromedioEjecucion() * r.getTiemposPorProceso().size();
             cantidadProcesos += r.getTiemposPorProceso().size();
         }
-    
+
+        int maxTiempo = 0;
+        for (List<Integer> tiempos : tiemposTotales.values()) {
+            for (int t : tiempos) {
+                if (t > maxTiempo) maxTiempo = t;
+            }
+        } 
         float promedioEspera = totalEspera / cantidadProcesos;
         float promedioEjecucion = totalEjecucion / cantidadProcesos;
+        ResultadoEjecucion resultadoFinal = new ResultadoEjecucion("Multinivel", tiemposTotales, promedioEjecucion, promedioEspera);
+        resultadoFinal.setFinTiempo(maxTiempo); // suponiendo que tengas un setter
     
-        return new ResultadoEjecucion("Multinivel", tiemposTotales, promedioEjecucion, promedioEspera);
+        return resultadoFinal;
     }
     
 
