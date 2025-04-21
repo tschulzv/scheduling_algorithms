@@ -11,7 +11,7 @@ public class FCFS extends Algoritmo {
         // ordenar por llegada usando un comparator
         procesos.sort(Comparator.comparingInt(BCP::getLlegada));
 
-        int reloj = 0; // lleva la cuenta del tiempo actual
+        int reloj = tiempoInicio; // lleva la cuenta del tiempo actual
         int totalEjecucion = 0; 
         int totalEspera = 0;
 

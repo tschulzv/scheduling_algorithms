@@ -22,11 +22,12 @@ public class ColaMultinivel {
 
         // ejecutar cada algoritmo por separado
         ResultadoEjecucion resul1 = algo1.ejecutar(prioridad1, reloj);
-        // obetener el 'tiempo actual' al terminar algorimto 1
-        reloj = resul1.getFinTiempo();
+        // obtener el tiempo al terminar algorimto 1 y 
+        // sumarle 1 para iniciar en el siguiente tiempo de reloj
+        reloj = resul1.getFinTiempo() + 1;
         ResultadoEjecucion resul2 = algo2.ejecutar(prioridad2, reloj);
-        // obetener el 'tiempo actual' al terminar algoritmo 2
-        reloj = resul2.getFinTiempo();
+        
+        reloj = resul2.getFinTiempo() + 1;
         ResultadoEjecucion resul3 = algo2.ejecutar(prioridad3, reloj);
         // combinar los resultados
         ResultadoEjecucion resulFinal = ResultadoEjecucion.mergeResultados(resul1, resul2, resul3);

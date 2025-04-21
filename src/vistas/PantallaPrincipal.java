@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class PantallaPrincipal extends JFrame {
 
     private final java.util.List<JCheckBox> checkboxes = new ArrayList<>();
-    private final int MAX_SELECTION = 3;
     private final JPanel panelResultados = new JPanel(); // panel pata mostrar las tablas de resultados
 
     public PantallaPrincipal(ArrayList<BCP> procesos) {
@@ -62,16 +61,6 @@ public class PantallaPrincipal extends JFrame {
         checkboxes.add(hrrn);
         checkboxes.add(colaMulti);
 
-        // item listener para evitar que se seleccionen más de 3 algoritmos
-        for (JCheckBox cb : checkboxes) {
-            cb.addItemListener(e -> {
-                long seleccionados = checkboxes.stream().filter(AbstractButton::isSelected).count();
-                if (seleccionados > MAX_SELECTION) {
-                    cb.setSelected(false);
-                    JOptionPane.showMessageDialog(this, "Solo puedes seleccionar hasta 3 algoritmos.");
-                }
-            });
-        }
 
         JTextField quantumField = new JTextField("4", 5);
         JPanel rrPanel = new JPanel();
@@ -262,5 +251,4 @@ public class PantallaPrincipal extends JFrame {
         }
     }
     
-
 }
